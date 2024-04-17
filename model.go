@@ -138,43 +138,22 @@ func getTags(db *sql.DB, start, count int) ([]tag, error) {
 type productToTagAssignment struct {
 	ID        int `json:"id"`
 	ProductID int `json:"productID"`
-	TagID     int `json:"TagID"`
+	TagID     int `json:"tagID"`
 }
 
 func (pta *productToTagAssignment) getProductToTagAssignment(db *sql.DB) error {
-	return db.QueryRow("SELECT name FROM productToTagAssignment WHERE id=$1",
-		pta.ID).Scan(&pta.ID)
+	return db.QueryRow("SELECT id, productID, tagID FROM productToTagAssignment WHERE productID=$1 AND tagID=$2", pta.ProductID, pta.TagID).Scan(&pta.ID, &pta.ProductID, &pta.TagID)
 }
 
-func (pta *productToTagAssignment) updateProductToTagAssignment(db *sql.DB) error {
-	_, err :=
-		db.Exec("UPDATE productToTagAssignment SET productID=$1,TagID=$2 WHERE id=$3",
-			pta.ProductID, pta.TagID, pta.ID)
-
-	return err
-}
-
-func (pta *productToTagAssignment) deleteProductToTagAssignment(db *sql.DB) error {
-	_, err := db.Exec("DELETE FROM productToTagAssignment WHERE id=$1", pta.ID)
-
-	return err
-}
-
-func (pta *productToTagAssignment) deleteProductToTagAssignmentByProduct(db *sql.DB) error {
-	_, err := db.Exec("DELETE FROM productToTagAssignment WHERE productID=$1", pta.ProductID)
-
-	return err
-}
-
-func (pta *productToTagAssignment) deleteProductToTagAssignmentByTag(db *sql.DB) error {
-	_, err := db.Exec("DELETE FROM productToTagAssignment WHERE TagID=$1", pta.TagID)
+func (pta *productToTagAssignment) deleteProductToTagAssignmentByProductAndTag(db *sql.DB) error {
+	_, err := db.Exec("DELETE FROM productToTagAssignment WHERE productID=$1 AND tagID=$2", pta.ProductID, pta.TagID)
 
 	return err
 }
 
 func (pta *productToTagAssignment) createProductToTagAssignment(db *sql.DB) error {
 	err := db.QueryRow(
-		"INSERT INTO productToTagAssignment(productID,TagID) VALUES($1,$2) RETURNING id",
+		"INSERT INTO productToTagAssignment(productID,tagID) VALUES($1,$2) RETURNING id",
 		pta.ProductID, pta.TagID).Scan(&pta.ID)
 
 	if err != nil {
@@ -182,4 +161,52 @@ func (pta *productToTagAssignment) createProductToTagAssignment(db *sql.DB) erro
 	}
 
 	return nil
+}
+
+func getTagsAssignedToProduct(db *sql.DB, productID, start, count int) ([]tag, error) {
+	rows, err := db.Query(
+		"SELECT tag.id, tag.name FROM tag INNER JOIN productToTagAssignment ON tag.id = tagID WHERE productID=$1 LIMIT $2 OFFSET $3",
+		productID, count, start)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	tagsAssignedToProduct := []tag{}
+
+	for rows.Next() {
+		var t tag
+		if err := rows.Scan(&t.ID, &t.Name); err != nil {
+			return nil, err
+		}
+		tagsAssignedToProduct = append(tagsAssignedToProduct, t)
+	}
+
+	return tagsAssignedToProduct, nil
+}
+
+func getProductsWithTagAssigned(db *sql.DB, tagID, start, count int) ([]product, error) {
+	rows, err := db.Query(
+		"SELECT products.id, products.name, products.price FROM products INNER JOIN productToTagAssignment ON products.id = productID WHERE tagID=$1 LIMIT $2 OFFSET $3",
+		tagID, count, start)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	productsWithTagAssigned := []product{}
+
+	for rows.Next() {
+		var p product
+		if err := rows.Scan(&p.ID, &p.Name, &p.Price); err != nil {
+			return nil, err
+		}
+		productsWithTagAssigned = append(productsWithTagAssigned, p)
+	}
+
+	return productsWithTagAssigned, nil
 }
