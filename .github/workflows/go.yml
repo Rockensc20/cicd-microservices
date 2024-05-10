@@ -15,6 +15,10 @@ env:
   APP_DB_PASSWORD: postgres
   APP_DB_NAME: postgres
 
+  TEST_DB_USERNAME: postgres
+  TEST_DB_PASSWORD: postgres
+  TEST_DB_NAME: postgres
+
 jobs:
 
   build:
