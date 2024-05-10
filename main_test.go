@@ -18,13 +18,16 @@ var a App
 
 func TestMain(m *testing.M) {
 	a.Initialize(
-		"postgres",
-		"postgres",
-		"postgres")
+		os.Getenv("TEST_DB_USERNAME"),
+		os.Getenv("TEST_DB_PASSWORD"),
+		os.Getenv("TEST_DB_NAME"))
 
 	ensureTableExists()
+
 	code := m.Run()
+
 	clearTable()
+
 	os.Exit(code)
 }
 
