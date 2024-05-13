@@ -42,7 +42,7 @@ jobs:
       run: go test -v ./...
   
   sonarCloud:
-    needs: build
+    needs: build_and_test
     name: SonarCloud Code Analysis
     runs-on: ubuntu-latest
 
