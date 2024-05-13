@@ -20,7 +20,6 @@ env:
   TEST_DB_NAME: postgres
 
 jobs:
-
   build_and_test:
     runs-on: ubuntu-latest
     steps:
