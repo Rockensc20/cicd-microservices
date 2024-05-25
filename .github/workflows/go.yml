@@ -14,11 +14,13 @@ env:
   APP_DB_USERNAME: postgres
   APP_DB_PASSWORD: postgres
   APP_DB_PORT: 5416
+  APP_DB_HOST: localhost
   APP_DB_NAME: postgres
 
   TEST_DB_USERNAME: postgres
   TEST_DB_PASSWORD: postgres
   TEST_DB_PORT: 5416
+  TEST_DB_HOST: localhost
   TEST_DB_NAME: postgres
 
 jobs:
@@ -34,7 +36,7 @@ jobs:
 
     # Start postgresql docker container
     - name: Start postgresql Container
-      run: docker run --name postgres -p 5416:5432 -e POSTGRES_PASSWORD=${APP_DB_PASSWORD} -e POSTGRES_USER=${APP_DB_USERNAME} -e POSTGRES_DB=${APP_DB_NAME} -e POSTGRES_HOST=postgres -d postgres
+      run: docker run --name postgres -p 5416:5432 -e POSTGRES_PASSWORD=${APP_DB_PASSWORD} -e POSTGRES_USER=${APP_DB_USERNAME} -e POSTGRES_DB=${APP_DB_NAME} -d postgres
 
     - name: Build
       run: go build -v ./...

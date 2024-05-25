@@ -20,10 +20,15 @@ type App struct {
 	DB     *sql.DB
 }
 
-func (a *App) Initialize(user, password, port, dbname string) {
+func (a *App) Initialize(user, password, port, host, dbname string) {
 	//fmt.Print(fmt.Sprintf("user=%s password=%s port=5416 dbname=%s?sslmode=disable", user, password, dbname))
-	connectionString :=
-		fmt.Sprintf("user=%s password=%s port=%s host=postgres dbname=%s sslmode=disable", user, password, port, dbname)
+	connectionString := ""
+
+	if port == "localhost" {
+		connectionString = fmt.Sprintf("user=%s password=%s port=%s dbname=%s sslmode=disable", user, password, port, dbname)
+	} else {
+		connectionString = fmt.Sprintf("user=%s password=%s port=%s host=%s dbname=%s sslmode=disable", user, password, port, host, dbname)
+	}
 
 	var err error
 	a.DB, err = sql.Open("postgres", connectionString)

@@ -16,6 +16,7 @@ services:
       APP_DB_USERNAME: postgres
       APP_DB_PASSWORD: postgres
       APP_DB_PORT: 5416
+      APP_DB_HOST: postgres
       APP_DB_NAME: postgres
     ports:
       - "9090:8888"  # Map host port 9090 to container port 8888
