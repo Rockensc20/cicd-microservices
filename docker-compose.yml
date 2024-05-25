@@ -2,6 +2,8 @@ version: '3'
 services:
   postgres:
     image: postgres:latest
+    restart: always
+    hostname: postgres 
     environment:
       POSTGRES_PASSWORD: postgres 
       POSTGRES_USER: postgres
@@ -13,7 +15,7 @@ services:
     environment: 
       APP_DB_USERNAME: postgres
       APP_DB_PASSWORD: postgres
-      APP_DB_PORT: 5432
+      APP_DB_PORT: 5416
       APP_DB_NAME: postgres
     ports:
       - "9090:8888"  # Map host port 9090 to container port 8888
