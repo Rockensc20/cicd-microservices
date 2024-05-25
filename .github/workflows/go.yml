@@ -32,7 +32,7 @@ jobs:
 
     # Start postgresql docker container
     - name: Start postgresql Container
-      run: docker run --name postgres -p 5416:5432 -e POSTGRES_PASSWORD=${APP_DB_PASSWORD} -e POSTGRES_USER=${APP_DB_USERNAME} -e POSTGRES_DB=${APP_DB_NAME}
+      run: docker run --name postgres -p 5416:5432 -e POSTGRES_PASSWORD=${APP_DB_PASSWORD} -e POSTGRES_USER=${APP_DB_USERNAME} -e POSTGRES_DB=${APP_DB_NAME} postgres:latest
 
     - name: Build
       run: go build -v ./...
