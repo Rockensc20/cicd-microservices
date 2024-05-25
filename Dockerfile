@@ -12,6 +12,8 @@ COPY go.mod ./
 COPY go.sum ./
 COPY model.go ./
 COPY main.go ./
+COPY env-sample ./
+COPY env-test ./
 
 # List items in the working directory (ls)
 RUN ls
