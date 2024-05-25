@@ -7,16 +7,17 @@ LABEL maintainer="s2310455007@students.fh-hagenberg.at"
 WORKDIR /src
 
 # Copy local files to the working directory
-COPY app.go go.*./
+COPY app.go ./
+COPY go.mod ./
+COPY go.sum ./
 COPY model.go ./
 COPY main.go ./
-
 
 # List items in the working directory (ls)
 RUN ls
 
 # Build the GO app as myapp binary and move it to /usr/
-RUN go build github.com/Rockensc20/cicd-microservices -o /usr/cicd-microservices
+RUN go build -o /usr/cicd-microservices
 
 #Expose port 8888
 EXPOSE 8888
