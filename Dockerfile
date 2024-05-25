@@ -1,3 +1,5 @@
+FROM golang:1.22-alpine
+
 FROM alpine
 
 RUN addgroup -S nonroot \
@@ -6,8 +8,6 @@ RUN addgroup -S nonroot \
 USER nonroot
 
 ENTRYPOINT ["id"]
-
-FROM golang:1.22-alpine
 
 # Set maintainer label: maintainer=[YOUR-EMAIL]
 LABEL maintainer="s2310455007@students.fh-hagenberg.at"
