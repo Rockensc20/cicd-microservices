@@ -16,6 +16,7 @@ COPY main.go ./
 RUN ls
 
 # Build the GO app as myapp binary and move it to /usr/
+
 RUN go build github.com/Rockensc20/cicd-microservices -o /usr/cicd-microservices
 
 #Expose port 8888
