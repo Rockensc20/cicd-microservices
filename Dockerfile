@@ -1,3 +1,12 @@
+FROM alpine
+
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot
+
+USER nonroot
+
+ENTRYPOINT ["id"]
+
 FROM golang:1.22-alpine
 
 # Set maintainer label: maintainer=[YOUR-EMAIL]
