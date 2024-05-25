@@ -10,12 +10,14 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5416:5432"  # Map host port 5432 to container port 5416
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   go-microservice:
     image: rockenscdev/go-microservice-test-image:latest
     environment: 
       APP_DB_USERNAME: postgres
       APP_DB_PASSWORD: postgres
-      APP_DB_PORT: 5416
+      APP_DB_PORT: 5432
       APP_DB_HOST: postgres
       APP_DB_NAME: postgres
     ports:
